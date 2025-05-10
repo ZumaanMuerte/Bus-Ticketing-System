@@ -40,10 +40,11 @@
             <table class="w-full text-left border-t border-gray-200">
                 <thead class="bg-indigo-900 text-white">
                     <tr>
-                        <th class="p-2">BusID</th>
+                        <th class="p-2">Bus ID</th>
+                        <th class="p-2">Bus Number</th> <!-- NEW -->
                         <th class="p-2">Bus Type</th>
                         <th class="p-2">Capacity</th>
-                        <th class="p-2">Destination</th>
+                        <th class="p-2">Current Location</th> <!-- UPDATED -->
                         <th class="p-2">Action</th>
                     </tr>
                 </thead>
@@ -51,9 +52,10 @@
                     @foreach($buses as $bus)
                         <tr class="border-b hover:bg-gray-100">
                             <td class="p-2">{{ $bus->bus_id }}</td>
+                            <td class="p-2">{{ $bus->bus_number }}</td> <!-- NEW -->
                             <td class="p-2">{{ $bus->bus_type }}</td>
                             <td class="p-2">{{ $bus->capacity }}</td>
-                            <td class="p-2">{{ $bus->destination }}</td>
+                            <td class="p-2">{{ $bus->current_location }}</td> <!-- UPDATED -->
                             <td class="p-2 flex gap-2">
                                 <button type="button" onclick="openEditModal({{ $bus }})" class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-2 rounded">Edit</button>
                                 <form action="{{ route('bus.destroy', $bus->id) }}" method="POST">
@@ -80,12 +82,13 @@
             <form action="{{ route('bus.store') }}" method="POST">
                 @csrf
                 <input type="text" name="bus_id" placeholder="Bus ID" class="w-full border mb-2 px-3 py-2 rounded" required>
+                <input type="text" name="bus_number" placeholder="Bus Number (e.g. 034F)" class="w-full border mb-2 px-3 py-2 rounded" required>
                 <input type="text" name="bus_type" placeholder="Bus Type" class="w-full border mb-2 px-3 py-2 rounded" required>
                 <input type="number" name="capacity" placeholder="Capacity" class="w-full border mb-2 px-3 py-2 rounded" required>
 
-                <select name="destination" class="w-full border mb-2 px-3 py-2 rounded" required>
-                    <option value="">Select Destination</option>
-                    @foreach($destinations as $city)
+                <select name="current_location" class="w-full border mb-2 px-3 py-2 rounded" required>
+                    <option value="">Select Location</option>
+                    @foreach($locations as $city)
                         <option value="{{ $city }}">{{ $city }}</option>
                     @endforeach
                 </select>
@@ -109,12 +112,15 @@
                 <input type="text" name="bus_type" id="edit_bus_type" placeholder="Bus Type" class="w-full border mb-2 px-3 py-2 rounded" required>
                 <input type="number" name="capacity" id="edit_capacity" placeholder="Capacity" class="w-full border mb-2 px-3 py-2 rounded" required>
 
-                <select name="destination" id="edit_destination" class="w-full border mb-2 px-3 py-2 rounded" required>
-                    <option value="">Select Destination</option>
-                    @foreach($destinations as $city)
+                <input type="text" name="bus_number" id="edit_bus_number" placeholder="Bus Number" class="w-full border mb-2 px-3 py-2 rounded" required>
+
+                <select name="current_location" id="edit_current_location" class="w-full border mb-2 px-3 py-2 rounded" required>
+                    <option value="">Select Location</option>
+                    @foreach($locations as $city)
                         <option value="{{ $city }}">{{ $city }}</option>
                     @endforeach
                 </select>
+
 
                 <div class="flex justify-end gap-2 mt-4">
                     <button type="button" onclick="closeEditModal()" class="bg-red-500 text-white px-4 py-2 rounded">Cancel</button>
@@ -141,7 +147,8 @@
             document.getElementById('edit_bus_id').value = bus.bus_id;
             document.getElementById('edit_bus_type').value = bus.bus_type;
             document.getElementById('edit_capacity').value = bus.capacity;
-            document.getElementById('edit_destination').value = bus.destination;
+            document.getElementById('edit_bus_number').value = bus.bus_number; // NEW
+            document.getElementById('edit_current_location').value = bus.current_location; // UPDATED
 
             const form = document.getElementById('editBusForm');
             form.action = `/bus/${bus.id}`;

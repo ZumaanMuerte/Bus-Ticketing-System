@@ -9,15 +9,16 @@ class BusController extends Controller
 {
     public function index(Request $request)
     {
-        $destinations = ['Malaybay','Gingoog', 'Butuan', 'Davao City', 'Surigao City', 'Surigao Sur'];
+        // Change destinations to locations for consistency
+        $locations = ['Malaybalay', 'Gingoog', 'Butuan', 'Davao City', 'Surigao City', 'Surigao Sur'];
         $search = $request->input('search');
 
         $buses = Bus::when($search, function ($query, $search) {
             return $query->where('capacity', 'like', "%$search%")
-                         ->orWhere('destination', 'like', "%$search%");
+                         ->orWhere('current_location', 'like', "%$search%"); // Update to current_location
         })->paginate(10);
 
-        return view('bus.index', compact('buses', 'destinations', 'search'));
+        return view('bus.index', compact('buses', 'locations', 'search')); // Update variable name
     }
 
     public function store(Request $request)
@@ -26,10 +27,18 @@ class BusController extends Controller
             'bus_id' => 'required|string',
             'bus_type' => 'required|string',
             'capacity' => 'required|integer',
-            'destination' => 'required|string',
+            'current_location' => 'required|string', // Update to current_location
+            'bus_number' => 'required|string', // Add bus_number validation
         ]);
 
-        Bus::create($request->all());
+        Bus::create([
+            'bus_id' => $request->bus_id,
+            'bus_type' => $request->bus_type,
+            'capacity' => $request->capacity,
+            'current_location' => $request->current_location, // Update to current_location
+            'bus_number' => $request->bus_number, // Store bus_number
+        ]);
+
         return redirect()->route('bus.index')->with('success', 'Bus added successfully');
     }
 
@@ -39,11 +48,19 @@ class BusController extends Controller
             'bus_id' => 'required|string',
             'bus_type' => 'required|string',
             'capacity' => 'required|integer',
-            'destination' => 'required|string',
+            'current_location' => 'required|string', // Update to current_location
+            'bus_number' => 'required|string', // Add bus_number validation
         ]);
 
         $bus = Bus::findOrFail($id);
-        $bus->update($request->all());
+        $bus->update([
+            'bus_id' => $request->bus_id,
+            'bus_type' => $request->bus_type,
+            'capacity' => $request->capacity,
+            'current_location' => $request->current_location, // Update to current_location
+            'bus_number' => $request->bus_number, // Update bus_number
+        ]);
+
         return redirect()->route('bus.index')->with('success', 'Bus updated successfully');
     }
 
@@ -53,3 +70,4 @@ class BusController extends Controller
         return redirect()->route('bus.index')->with('success', 'Bus deleted');
     }
 }
+
