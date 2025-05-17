@@ -30,22 +30,29 @@
                     </thead>
                     <tbody>
                         @foreach($accounts as $account)
-                            <tr class="border-b hover:bg-gray-100">
-                                <td class="p-2">{{ $account->id }}</td>
-                                <td class="p-2">{{ $account->role }}</td>
-                                <td class="p-2">{{ $account->name }}</td>
-                                <td class="p-2">{{ $account->email }}</td>
-                                <td class="p-2">••••••••</td>
-                                <td class="p-2 flex gap-2">
-                                    <button onclick="openEditModal({{ $account->id }}, '{{ $account->role }}')"
-                                            class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-2 rounded">Edit</button>
-                                    <form action="{{ route('account.destroy', $account->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
+                        <tr class="border-b hover:bg-gray-100">
+                            <td class="p-2">{{ $account->id }}</td>
+                            <td class="p-2">{{ $account->role }}</td>
+                            <td class="p-2 flex items-center gap-2">
+                                @if($account->avatar)
+<img src="{{ asset('storage/' . $account->avatar) }}" alt="Avatar" class="w-6 h-6 rounded-full object-cover">
+                                @else
+<img src="{{ asset('images/default-profile.png') }}" alt="Default Avatar" class="w-6 h-6 rounded-full object-cover">
+                                @endif
+                                {{ $account->name }}
+                            </td>
+                            <td class="p-2">{{ $account->email }}</td>
+                            <td class="p-2">••••••••</td>
+                            <td class="p-2 flex gap-2">
+                                <button onclick="openEditModal({{ $account->id }}, '{{ $account->role }}')"
+                                        class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-2 rounded">Edit</button>
+                                <form action="{{ route('account.destroy', $account->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
