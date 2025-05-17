@@ -18,7 +18,7 @@ class AdminUserSeeder extends Seeder
                 'email' => 'test@gmail.com',
                 'password' => Hash::make('12345678'), // Use a strong password in production
                 'role' => 'admin',
-            ]
+            ],
         );
     }
 }

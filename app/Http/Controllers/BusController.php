@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class BusController extends Controller
 {
+
     public function index(Request $request)
     {
         // Change destinations to locations for consistency
@@ -15,6 +16,7 @@ class BusController extends Controller
 
         $buses = Bus::when($search, function ($query, $search) {
             return $query->where('capacity', 'like', "%$search%")
+                         ->orWhere('bus_number', 'like', "%$search%") // Add bus_number search
                          ->orWhere('current_location', 'like', "%$search%"); // Update to current_location
         })->paginate(10);
 
@@ -24,19 +26,17 @@ class BusController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'bus_id' => 'required|string',
+            'bus_number' => 'required|string', // Add bus_number validation
             'bus_type' => 'required|string',
             'capacity' => 'required|integer',
             'current_location' => 'required|string', // Update to current_location
-            'bus_number' => 'required|string', // Add bus_number validation
         ]);
 
         Bus::create([
-            'bus_id' => $request->bus_id,
+            'bus_number' => $request->bus_number, // Store bus_number
             'bus_type' => $request->bus_type,
             'capacity' => $request->capacity,
             'current_location' => $request->current_location, // Update to current_location
-            'bus_number' => $request->bus_number, // Store bus_number
         ]);
 
         return redirect()->route('bus.index')->with('success', 'Bus added successfully');
@@ -45,25 +45,22 @@ class BusController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'bus_id' => 'required|string',
+            'bus_number' => 'required|string', // Add bus_number validation
             'bus_type' => 'required|string',
             'capacity' => 'required|integer',
             'current_location' => 'required|string', // Update to current_location
-            'bus_number' => 'required|string', // Add bus_number validation
         ]);
 
         $bus = Bus::findOrFail($id);
         $bus->update([
-            'bus_id' => $request->bus_id,
+            'bus_number' => $request->bus_number, // Update bus_number
             'bus_type' => $request->bus_type,
             'capacity' => $request->capacity,
             'current_location' => $request->current_location, // Update to current_location
-            'bus_number' => $request->bus_number, // Update bus_number
         ]);
 
         return redirect()->route('bus.index')->with('success', 'Bus updated successfully');
     }
-
     public function destroy($id)
     {
         Bus::findOrFail($id)->delete();

@@ -40,7 +40,6 @@
             <table class="w-full text-left border-t border-gray-200">
                 <thead class="bg-indigo-900 text-white">
                     <tr>
-                        <th class="p-2">Bus ID</th>
                         <th class="p-2">Bus Number</th> <!-- NEW -->
                         <th class="p-2">Bus Type</th>
                         <th class="p-2">Capacity</th>
@@ -51,7 +50,6 @@
                 <tbody>
                     @foreach($buses as $bus)
                         <tr class="border-b hover:bg-gray-100">
-                            <td class="p-2">{{ $bus->bus_id }}</td>
                             <td class="p-2">{{ $bus->bus_number }}</td> <!-- NEW -->
                             <td class="p-2">{{ $bus->bus_type }}</td>
                             <td class="p-2">{{ $bus->capacity }}</td>
@@ -81,7 +79,6 @@
             <h3 class="text-lg font-semibold mb-4">Add New Bus Data</h3>
             <form action="{{ route('bus.store') }}" method="POST">
                 @csrf
-                <input type="text" name="bus_id" placeholder="Bus ID" class="w-full border mb-2 px-3 py-2 rounded" required>
                 <input type="text" name="bus_number" placeholder="Bus Number (e.g. 034F)" class="w-full border mb-2 px-3 py-2 rounded" required>
                 <input type="text" name="bus_type" placeholder="Bus Type" class="w-full border mb-2 px-3 py-2 rounded" required>
                 <input type="number" name="capacity" placeholder="Capacity" class="w-full border mb-2 px-3 py-2 rounded" required>
@@ -108,11 +105,10 @@
             <form id="editBusForm" method="POST">
                 @csrf
                 @method('PUT')
-                <input type="text" name="bus_id" id="edit_bus_id" placeholder="Bus ID" class="w-full border mb-2 px-3 py-2 rounded" required>
+                <input type="text" name="bus_number" id="edit_bus_number" placeholder="Bus Number" class="w-full border mb-2 px-3 py-2 rounded" required>
                 <input type="text" name="bus_type" id="edit_bus_type" placeholder="Bus Type" class="w-full border mb-2 px-3 py-2 rounded" required>
                 <input type="number" name="capacity" id="edit_capacity" placeholder="Capacity" class="w-full border mb-2 px-3 py-2 rounded" required>
 
-                <input type="text" name="bus_number" id="edit_bus_number" placeholder="Bus Number" class="w-full border mb-2 px-3 py-2 rounded" required>
 
                 <select name="current_location" id="edit_current_location" class="w-full border mb-2 px-3 py-2 rounded" required>
                     <option value="">Select Location</option>

@@ -8,11 +8,11 @@ class Bus extends Model
 {
     //
     protected $fillable = [
-        'bus_id',
         'bus_number',       // new
         'bus_type',
         'capacity',
         'current_location', // from destination
+        'last_accessed_at', // see time of last access
     ];
 
 }

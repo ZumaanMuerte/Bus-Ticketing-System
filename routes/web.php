@@ -44,11 +44,6 @@ Route::middleware(['auth'])->group(function () {
 Route::resource('conductor',ConductorController::class);
 Route::resource('driver', DriverController::class);
 Route::resource('dispatcher', DispatcherController::class);
-
-//Route::put('/bus/{id}', [BusController::class, 'update'])->name('bus.update');
-//Route::delete('/bus/{id}', [BusController::class, 'destroy'])->name('bus.destroy');
-//Route::post('/bus', [BusController::class, 'store'])->name('bus.store');
-//Route::get('/bus', [BusController::class, 'index'])->name('bus.index');
 Route::resource('bus',BusController::class);
 
 Route::resource('earning', EarningsController::class);

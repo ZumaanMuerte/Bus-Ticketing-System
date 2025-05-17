@@ -9,8 +9,12 @@
                         <a href="{{ route('dashboard') }}">
                             <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                         </a>
-                    @elseif(Auth::user()->role === 'client' || Auth::user()->role === 'employee')
+                    @elseif(Auth::user()->role === 'client')
                         <a href="{{ route('user') }}">
+                            <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        </a>
+                    @elseif(Auth::user()->role === 'employee')
+                        <a href="{{ route('dispatcher.index') }}">
                             <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                         </a>
                     @endif
@@ -54,36 +58,15 @@
                             </form>
                         </x-slot>
                     </x-dropdown>
-                    <!-- Dropdown for On-Field Employees
-                    <div class="relative group">
-                        <button class="inline-flex items-center px-3 py-2 text-sm font-medium text-white hover:text-gray-900 focus:outline-none">
-                            On-Field Employee
-                            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <ul class="absolute z-10 hidden group-hover:block bg-white shadow-md mt-2 rounded w-40">
-                            <li>
-                                <x-nav-link :href="route('driver.index')" :active="request()->routeIs('driver.*')" class="block px-4 py-2 hover:bg-gray-100">
-                                    {{ __('Driver') }}
-                                </x-nav-link>
-                            </li>
-                            <li>
-                                <x-nav-link :href="route('conductor.index')" :active="request()->routeIs('conductor.*')" class="block px-4 py-2 hover:bg-gray-100">
-                                    {{ __('Conductor') }}
-                                </x-nav-link>
-                            </li>
-                            <li>
-                                <x-nav-link :href="route('dispatcher.index')" :active="request()->routeIs('dispatcher.*')" class="block px-4 py-2 hover:bg-gray-100">
-                                    {{ __('Dispatcher') }}
-                                </x-nav-link>
-                            </li>
-                        </ul>
-                    </div> -->
-                @elseif(Auth::user()->role === 'client' || Auth::user()->role === 'employee')
+
+                @elseif(Auth::user()->role === 'client')
                     <x-nav-link :href="route('user')" :active="request()->routeIs('user')">
                         {{ __('User Page') }}
                     </x-nav-link>
+                @elseif(Auth::user()->role === 'employee')
+                <x-nav-link :href="route('dispatcher.index')" :active="request()->routeIs('dispatcher.*')">
+                    {{ __('Dispatcher') }}
+                </x-nav-link>
                 @endif
             </div>
 
