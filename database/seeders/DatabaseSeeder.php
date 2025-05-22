@@ -21,5 +21,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminUserSeeder::class, // Ensure this is properly called
         ]);
+        //base fare
+        $this->call([TicketPriceSeeder::class,]);
+        //pitstops locations
+        $this->call(LocationsTableSeeder::class);
+
     }
 }
