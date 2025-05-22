@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('buses', function (Blueprint $table) {
+        Schema::create('ticket_prices', function (Blueprint $table) {
             $table->id();
-            $table->string('bus_number')->unique();
-            $table->string('bus_type');
-            $table->integer('capacity');
-            $table->string('current_location')->nullable();
-            $table->dateTime('last_accessed_at')->nullable();
-            $table->enum('bus_aicon', ['air-condition', 'non-air-condition']);
+            $table->enum('bus_type', ['air-condition', 'non-air-condition']);
             $table->enum('bus_stop', ['non-stop', 'provincial']);
+            $table->decimal('base_fare', 5, 2);
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('buses');
+        Schema::dropIfExists('ticket_prices');
     }
 };

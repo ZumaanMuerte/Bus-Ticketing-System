@@ -27,48 +27,62 @@
                 </thead>
                 <tbody>
                     @foreach($buses as $bus)
-                        <tr>
+                        <tr class="border-b hover:bg-gray-100">
                             <td class="p-2">{{ $bus->bus_number }}</td>
                             <td class="p-2">{{ $bus->bus_type }}</td>
-                            <td class="p-2">{{ $bus->current_location }}</td>
-                            <td class="p-2">{{ $bus->last_accessed_at ?? '—' }}</td>
+                            <td class="p-2">{{ $bus->current_location ?? '—' }}</td>
                             <td class="p-2">
-                                <!-- Modal Trigger -->
-                                <button onclick="document.getElementById('modal-{{ $bus->id }}').classList.remove('hidden')" class="bg-blue-500 text-black px-3 py-1 rounded hover:bg-blue-600">Edit</button>
-
-                                <!-- Modal -->
-                                <div id="modal-{{ $bus->id }}" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50">
-                                    <div class="bg-white p-6 rounded shadow max-w-md w-full relative">
-                                        <h2 class="text-xl font-semibold mb-4">Update Bus Location</h2>
-
-                                        <form action="{{ route('dispatcher.update', $bus->id) }}" method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <label class="block mb-2 font-medium">Current Location:</label>
-                                            <select name="current_location" class="w-full border-gray-300 rounded mb-4">
-                                                @foreach ($locations as $location)
-                                                    <option value="{{ $location }}" {{ $location == $bus->current_location ? 'selected' : '' }}>
-                                                        {{ $location }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-
-                                            <div class="flex justify-end gap-2">
-                                                <button type="button" onclick="document.getElementById('modal-{{ $bus->id }}').classList.add('hidden')" class="bg-gray-300 px-3 py-1 rounded">Cancel</button>
-                                                <button type="submit" class="bg-green-500 text-black px-3 py-1 rounded hover:bg-green-600">Update</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                                    {{ $bus->last_accessed_at ? \Carbon\Carbon::parse($bus->last_accessed_at)->format('Y-m-d H:i') : '—' }}
+                            </td>
+                            <td class="p-2">
+                                <button onclick="openDispatchModal({{ $bus }})"  class="bg-indigo-500 hover:bg-indigo-600 text-black py-1 px-3 rounded">
+                                    Update
+                                </button>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-
-            <div class="mt-4">
-                {{ $buses->links() }}
-            </div>
         </div>
     </div>
+
+    <!-- Dispatch Update Modal -->
+    <div id="dispatchModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold mb-4">Update Bus Location</h3>
+            <form method="POST" id="dispatchForm">
+                @csrf
+                @method('PUT')
+                <select name="current_location" id="edit_current_location" class="w-full border mb-2 px-3 py-2 rounded" required>
+                    <option value="">Select Location</option>
+                    @foreach($locations as $city)
+                        <option value="{{ $city }}">{{ $city }}</option>
+                    @endforeach
+                </select>
+
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="closeDispatchModal()" class="bg-red-500 text-white px-4 py-2 rounded">
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-green-500 text-black px-4 py-2 rounded">
+                        Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function openDispatchModal(bus) {
+            const modal = document.getElementById('dispatchModal');
+            modal.classList.remove('hidden');
+            document.getElementById('edit_current_location').value = bus.current_location ?? '';
+            document.getElementById('dispatchForm').action = `/dispatcher/${bus.id}`;
+        }
+
+        function closeDispatchModal() {
+            document.getElementById('dispatchModal').classList.add('hidden');
+        }
+    </script>
 </x-app-layout>
