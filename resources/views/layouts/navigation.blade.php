@@ -1,7 +1,7 @@
 <nav x-data="{ open: false }" class="w-64 min-h-screen bg-white text-black shadow-lg flex flex-col px-6 py-8">
     
     <!-- Logo -->
-    <div class="flex flex-col justify-center mb-10">
+    <div class="flex flex-col justify-center mb-9">
         @if(Auth::check())
             <a href="{{ route(Auth::user()->role === 'admin' ? 'dashboard' : (Auth::user()->role === 'client' ? 'user' : 'dispatcher.index')) }}">
                 <x-application-logo/>
