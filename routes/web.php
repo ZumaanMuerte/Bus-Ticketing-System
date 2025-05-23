@@ -55,4 +55,3 @@ Route::middleware('auth')->group(function () {
     Route::post('/tickets/book', [UserTicketController::class, 'bookTicket'])->name('tickets.book');
     Route::get('/tickets/{id}', [UserTicketController::class, 'show'])->name('tickets.show');
 });
-
