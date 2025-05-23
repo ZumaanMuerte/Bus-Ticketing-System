@@ -84,20 +84,6 @@
                 @csrf
                 @method('PUT')
                 <div class="mb-4">
-                    <label class="block mb-1">Bus Type</label>
-                    <select name="bus_type" id="editBusType" class="w-full border rounded px-3 py-2">
-                        <option value="air-condition">Air-Condition</option>
-                        <option value="non-air-condition">Non-Air-Condition</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label class="block mb-1">Bus Stop</label>
-                    <select name="bus_stop" id="editBusStop" class="w-full border rounded px-3 py-2">
-                        <option value="non-stop">Non-Stop</option>
-                        <option value="provincial">Provincial</option>
-                    </select>
-                </div>
-                <div class="mb-4">
                     <label class="block mb-1">Base Fare</label>
                     <input type="number" name="base_fare" id="editBaseFare" step="0.01" class="w-full border rounded px-3 py-2">
                 </div>
@@ -122,8 +108,6 @@
         function openEditModal(price) {
             const form = document.getElementById('editForm');
             form.action = `/ticket/price/${price.id}`;
-            document.getElementById('editBusType').value = price.bus_type;
-            document.getElementById('editBusStop').value = price.bus_stop;
             document.getElementById('editBaseFare').value = price.base_fare;
             openModal('editModal');
         }
