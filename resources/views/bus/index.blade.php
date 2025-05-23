@@ -55,7 +55,7 @@
                             <td class="p-2">{{ $bus->capacity }}</td>
                             <td class="p-2">{{ $bus->current_location }}</td> <!-- UPDATED -->
                             <td class="p-2 flex gap-2">
-                                <button type="button" onclick="openEditModal({{ $bus }})" class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-2 rounded">Edit</button>
+                                <button type="button" onclick='openEditModal(@json($bus))' class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-2 rounded">Edit</button>
                                 <form action="{{ route('bus.destroy', $bus->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
@@ -102,13 +102,11 @@
     <div id="editBusModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
         <div class="bg-white p-6 rounded-lg w-full max-w-lg">
             <h3 class="text-lg font-semibold mb-4">Edit Bus</h3>
-            <form id="editBusForm" method="POST">
+            <form id="editBusForm" method="POST" action="">
                 @csrf
                 @method('PUT')
-                <input type="text" name="bus_number" id="edit_bus_number" placeholder="Bus Number" class="w-full border mb-2 px-3 py-2 rounded" required>
                 <input type="text" name="bus_type" id="edit_bus_type" placeholder="Bus Type" class="w-full border mb-2 px-3 py-2 rounded" required>
                 <input type="number" name="capacity" id="edit_capacity" placeholder="Capacity" class="w-full border mb-2 px-3 py-2 rounded" required>
-
 
                 <select name="current_location" id="edit_current_location" class="w-full border mb-2 px-3 py-2 rounded" required>
                     <option value="">Select Location</option>
@@ -120,7 +118,7 @@
 
                 <div class="flex justify-end gap-2 mt-4">
                     <button type="button" onclick="closeEditModal()" class="bg-red-500 text-white px-4 py-2 rounded">Cancel</button>
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Update</button>
+                    <button type="submit" class="bg-green-500 text-black px-4 py-2 rounded">Update</button>
                 </div>
             </form>
         </div>
@@ -140,15 +138,16 @@
             const modal = document.getElementById('editBusModal');
             modal.classList.remove('hidden');
 
-            document.getElementById('edit_bus_id').value = bus.bus_id;
             document.getElementById('edit_bus_type').value = bus.bus_type;
             document.getElementById('edit_capacity').value = bus.capacity;
-            document.getElementById('edit_bus_number').value = bus.bus_number; // NEW
-            document.getElementById('edit_current_location').value = bus.current_location; // UPDATED
+            document.getElementById('edit_bus_number').value = bus.bus_number;
+            document.getElementById('edit_current_location').value = bus.current_location?? '';
 
             const form = document.getElementById('editBusForm');
-            form.action = `/bus/${bus.id}`;
+            form.action = `${window.location.origin}/bus/${bus.id}`;
+
         }
+
 
         function closeEditModal() {
             document.getElementById('editBusModal').classList.add('hidden');

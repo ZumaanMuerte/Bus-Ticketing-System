@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('conductors', function (Blueprint $table) {
-            $table->id('conductor_id');
-            $table->string('name');
-            $table->string('surname');
-            $table->integer('age');
-            $table->string('license_no');
-            $table->string('contact_no');
+        Schema::create('locations', function (Blueprint $table) {
+            $table->id();
+            $table->string('location');
+            $table->decimal('distance_from_cdo', 5, 2); // in km
+            $table->boolean('is_stopover')->default(true); // true = stopover, false = non-stop only
             $table->timestamps();
         });
+
     }
 
     /**
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('conductors');
+        Schema::dropIfExists('locations');
     }
 };

@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  table {
+    @apply min-w-full border-collapse border border-gray-300 dark:border-gray-700;
+  }
+  thead tr {
+    @apply bg-gray-200 dark:bg-gray-800;
+  }
+  th, td {
+    @apply border border-gray-300 dark:border-gray-700 px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300;
+  }
+  tbody tr:nth-child(even) {
+    @apply bg-gray-50 dark:bg-gray-900;
+  }
+  tbody tr:hover {
+    @apply bg-gray-100 dark:bg-gray-700;
+  }
+}

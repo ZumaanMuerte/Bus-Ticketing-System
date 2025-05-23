@@ -11,7 +11,7 @@ class BusController extends Controller
     public function index(Request $request)
     {
         // Change destinations to locations for consistency
-        $locations = ['Malaybalay', 'Gingoog', 'Butuan', 'Davao City', 'Surigao City', 'Surigao Sur'];
+        $locations = ['Cagayan de Oro City','Malaybalay', 'Gingoog', 'Butuan', 'Davao City', 'Surigao City', 'Surigao Sur'];
         $search = $request->input('search');
 
         $buses = Bus::when($search, function ($query, $search) {

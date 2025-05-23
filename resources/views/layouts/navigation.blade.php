@@ -30,7 +30,10 @@
                     <x-nav-link :href="route('bus.index')" :active="request()->routeIs('bus.*')">
                         {{ __('Bus') }}
                     </x-nav-link>
-
+                    <x-nav-link :href="route('in_bus_employees.index')" :active="request()->routeIs('bus.*')">
+                        {{ __('Driver/Konductor') }}
+                    </x-nav-link>
+                    <!--
                     <x-dropdown class="relative group">
                         <x-slot name="trigger">
                             <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
@@ -45,17 +48,36 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <x-dropdown-link :href="route('driver.index')">
-                                {{ __('Driver') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link :href="route('conductor.index')">
-                                {{ __('Conductor') }}
+                            <x-dropdown-link :href="route('in_bus_employees.index')">
+                                {{ __('In-Bus') }}
                             </x-dropdown-link>
                             <x-dropdown-link :href="route('dispatcher.index')">
                                 {{ __('Dispatcher') }}
                             </x-dropdown-link>
+                        </x-slot>
+                    </x-dropdown>
+                -->
 
-                            </form>
+                    <x-dropdown class="relative group">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                <div>{{ 'Ticket' }}</div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('price.index')">
+                                {{ __('Price') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('sales.index')">
+                                {{ __('Sales') }}
+                            </x-dropdown-link>
                         </x-slot>
                     </x-dropdown>
 
@@ -78,6 +100,11 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                @if(auth()->user()->avatar)
+                                    <img src="{{ asset('storage/' . auth()->user()->avatar) }}" class="w-10 h-10 rounded-full mr-2" alt="User Avatar">
+                                @else
+                                    <img src="{{ asset('default-avatar.png') }}" class="w-10 h-10 rounded-full mr-2" alt="Default Avatar">
+                                @endif
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
@@ -127,29 +154,36 @@
             </x-responsive-nav-link>
         </div>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
+            <!-- Responsive Settings Options -->
+            <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+                <div class="px-4 flex items-center gap-2">
+                    @if(auth()->user()->avatar)
+                        <img src="{{ asset('storage/' . auth()->user()->avatar) }}" class="w-8 h-8 rounded-full" alt="User Avatar">
+                    @else
+                        <img src="{{ asset('default-avatar.png') }}" class="w-8 h-8 rounded-full" alt="Default Avatar">
+                    @endif
+                    <div>
+                        <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
+                        <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    </div>
+                </div>
 
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('profile.edit')">
+                        {{ __('Profile') }}
                     </x-responsive-nav-link>
-                </form>
+
+                    <!-- Authentication -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
+                </div>
             </div>
-        </div>
     </div>
 </nav>

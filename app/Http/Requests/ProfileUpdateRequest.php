@@ -25,6 +25,9 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'avatar' => ['nullable', 'image', 'max:2048'], // max 2MB
+            'role' => ['nullable', 'string', 'max:255'], // added role to validation
+            // Add other user fields here if needed to prevent erasure
         ];
     }
 }
